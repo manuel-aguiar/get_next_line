@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/13 19:30:05 by mmaria-d          #+#    #+#             */
+/*   Updated: 2023/04/13 19:36:49 by mmaria-d         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line_bonus.h"
 
 char	*get_next_line(int fd)
 {
 	static char	buf[MAX_FD][BUFFER_SIZE + 1];
-	char	*line;
-	int		found;
-	int		bytes;
-	int		line_len;
+	char		*line;
+	int			found;
+	int			bytes;
+	int			line_len;
 
 	if (BUFFER_SIZE <= 0 || fd < 0 || fd > MAX_FD || read(fd, 0, 0) < 0)
 		return (NULL);
