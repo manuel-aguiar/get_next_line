@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: manuel <manuel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 19:30:35 by mmaria-d          #+#    #+#             */
-/*   Updated: 2023/04/13 19:43:16 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/05/14 20:34:56 by manuel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 
 # define GET_NEXT_LINE_H
 
-#ifndef  BUFFER_SIZE
-# define BUFFER_SIZE 42
-#endif
+# ifndef  BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 
 # define MAX_FD 1024
-# define ENDFILE -1
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -31,5 +30,6 @@ char	*get_next_line(int fd);
 char	*gnl_strncat(char *buf, char *line, int *old_size, int inc_size);
 void	clean_buf(char *buf, int pivot);
 int		update_line(char *buf, char **line, int *line_len);
+int		buffer_refill(int fd, char *buf, char **line);
 
 #endif

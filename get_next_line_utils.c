@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmaria-d <mmaria-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: manuel <manuel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 19:30:27 by mmaria-d          #+#    #+#             */
-/*   Updated: 2023/04/13 19:31:55 by mmaria-d         ###   ########.fr       */
+/*   Updated: 2023/05/14 20:40:25 by manuel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*increase_line(char *line, int *old_size, int inc_size)
+{
+	char	*new_line;
+
+	new_line = malloc((*old_size + inc_size + 1) * sizeof(char));
+	if (!new_line)
+	{
+		if (line)
+			free(line);
+	}
+	return (new_line);
+}
 
 char	*gnl_strncat(char *buf, char *line, int *old_size, int inc_size)
 {
@@ -18,7 +31,7 @@ char	*gnl_strncat(char *buf, char *line, int *old_size, int inc_size)
 	int		i;
 	int		j;
 
-	new_line = malloc((*old_size + inc_size + 1) * sizeof(char));
+	new_line = increase_line(line, old_size, inc_size);
 	if (!new_line)
 		return (NULL);
 	if (line)
@@ -64,4 +77,23 @@ int	update_line(char *buf, char **line, int *line_len)
 		found = 1;
 	clean_buf(buf, i + 1);
 	return (found);
+}
+
+int	buffer_refill(int fd, char *buf, char **line)
+{
+	int	bytes;
+
+	bytes = read(fd, buf, BUFFER_SIZE);
+	if (bytes < 0)
+	{
+		buf[0] = '\0';
+		if (*line)
+			free(*line);
+		*line = NULL;
+		return (0);
+	}
+	buf[bytes] = '\0';
+	if (!bytes)
+		return (0);
+	return (1);
 }
