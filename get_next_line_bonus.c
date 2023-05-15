@@ -3,33 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: manuel <manuel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 19:30:32 by mmaria-d          #+#    #+#             */
-/*   Updated: 2023/05/14 20:38:08 by manuel           ###   ########.fr       */
+/*   Updated: 2023/05/15 11:49:36 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
+
+extern int	buffer_to_line(char *buf, char **line, int *line_len);
+extern int	buffer_refill(int fd, char *buf, char **line);
 
 char	*get_next_line(int fd)
 {
-	static char	buf[MAX_FD][BUFFER_SIZE + 1];
+	static char	buf[FOPEN_MAX][BUFFER_SIZE + 1];
 	char		*line;
-	int			found;
 	int			line_len;
 
-	if (BUFFER_SIZE <= 0 || fd < 0 || fd > MAX_FD)
+	if (BUFFER_SIZE <= 0 || fd < 0 || fd > FOPEN_MAX)
 		return (NULL);
 	line = NULL;
 	line_len = 0;
-	found = 0;
-	while (!found)
+	while (1)
 	{
-		found = update_line(buf[fd], &line, &line_len);
-		if (found && !line)
-			return (NULL);
-		if (!found && !buffer_refill(fd, buf[fd], &line))
+		if (buffer_to_line(buf[fd], &line, &line_len))
+			break ;
+		if (!buffer_refill(fd, buf[fd], &line))
 			break ;
 	}
 	return (line);
